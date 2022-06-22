@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "module": "esNext",
+    // TODO es5
+    "target": "es2015",
+    "jsx": "preserve",
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "alwaysStrict": true,
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "removeComments": false,
+    "moduleResolution": "Node",
+    "preserveConstEnums": true,
+    "experimentalDecorators": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
+    "noImplicitThis": false,
+    "outDir": "lib",
+    "rootDir": "./",
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@config/*": [
+        "./config/*"
+      ]
+    },
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "lib",
+    "*.js"
+  ]
+}
