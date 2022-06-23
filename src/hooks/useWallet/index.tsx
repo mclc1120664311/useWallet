@@ -103,7 +103,7 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
 
   const handleChainChanged = useCallback(
     (chainId: any) => {
-      if (supportedChainIds.includes(chainId)) {
+      if (supportedChainIds.includes(Number(chainId))) {
         chain.current = chainId;
         getAccount();
       } else {
