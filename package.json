@@ -1,6 +1,6 @@
 {
   "name": "@zlincgx/wallethooks",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "the react hooks about ethereum wallet ",
   "main": "src/index.tsx",
   "scripts": {
