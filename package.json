@@ -13,6 +13,7 @@
     "url": "git+ssh://git@github.com/mclc1120664311/useWallet.git"
   },
   "main": "dist/index.es.js",
+  "types": "dist/index.d.ts",
   "engines": {
     "node": ">=8",
     "npm": ">=5"

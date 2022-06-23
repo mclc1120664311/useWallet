@@ -5,8 +5,6 @@ import { errorFunction, toHome } from './utils';
 import { getAddChainParameters } from './chainInfo';
 import { decimalToHex } from './utils';
 
-export * from './chainInfo';
-export * from './chains';
 
 const provider = (function () {
   let result: ethers.ethers.providers.Web3Provider | null;
@@ -27,7 +25,7 @@ const provider = (function () {
 
 const { ethereum } = window;
 
-interface useWalletType {
+export interface useWalletType {
   address: string;
   setAddress: (address: string) => void;
   getAccount: () => void;
@@ -35,7 +33,7 @@ interface useWalletType {
   handleSwitchChain: (chainId: number) => void;
 }
 
-interface useWalletProps {
+export interface useWalletProps {
   supportedChainIds: number[];
 }
 
