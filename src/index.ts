@@ -10,3 +10,5 @@ export {
   CHAIN_IDS_TO_NAMES,
   ALL_SUPPORTED_CHAIN_IDS,
 } from './hooks/useWallet/chains';
+
+export { decimalToHex } from './hooks/useWallet/utils';
