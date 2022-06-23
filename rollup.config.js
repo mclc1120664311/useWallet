@@ -1,4 +1,4 @@
-import sass from 'rollup-plugin-sass'
+import less from 'rollup-plugin-less';
 import { uglify } from 'rollup-plugin-uglify'
 import typescript from 'rollup-plugin-typescript2'
 
@@ -15,6 +15,6 @@ export default {
       strict: false,
     },
   ],
-  plugins: [sass({ insert: true }), typescript(), uglify()],
+  plugins: [less(), typescript(), uglify()],
   external: ['react', 'react-dom'],
 }
