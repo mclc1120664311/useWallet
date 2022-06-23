@@ -1,6 +1,6 @@
 {
   "name": "@zlincgx/wallethooks",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "the react hooks about ethereum wallet ",
   "author": "Zlin",
   "license": "Apache-2.0",
@@ -79,7 +79,7 @@
     "ethers": "^5.6.9",
     "prop-types": "^15.7.2"
   },
-   "resolutions": {
+  "resolutions": {
     "postcss": "8"
   }
 }
