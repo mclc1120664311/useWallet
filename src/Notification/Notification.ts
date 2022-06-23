@@ -1,6 +1,5 @@
 import { notification } from "antd";
 import "antd/es/notification/style/css";
-import "";
 import "./Notification.less";
 
 const defaultInfo: any = ["success", "error", "warning", "info"];

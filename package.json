@@ -1,8 +1,8 @@
 {
-  "name": "usewallet",
-  "version": "1.0.0",
+  "name": "@zlincgx/wallethooks",
+  "version": "1.0.1",
   "description": "the react hooks about ethereum wallet ",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --config webpack.config.js",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js",

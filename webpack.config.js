@@ -1,5 +1,4 @@
 const path = require("path");
-const htmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
@@ -11,7 +10,7 @@ const isModuleBuild = BUILD_MODE === "module" || false;
 module.exports = {
     mode: isProduction ? "production" : "development",
     entry: {
-        index: isModuleBuild ? "./src/components/index.tsx" : "./src/index.tsx",
+        index: "./src/index.tsx",
     }, //如果你将 entry 设置为一个 array，那么只有数组中的最后一个会被暴露成库
     output: {
         filename: "[name].js",
@@ -109,9 +108,6 @@ module.exports = {
             filename: "css/[name].css",
         }),
         !isModuleBuild &&
-        new htmlWebpackPlugin({
-            template: "public/index.html",
-        }),
         isProduction && new CleanWebpackPlugin(),
     ].filter(Boolean),
 };

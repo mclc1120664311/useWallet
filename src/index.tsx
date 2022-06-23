@@ -55,7 +55,7 @@ function useWallet({ supportedChainIds }: useWalletProps): useWalletType {
   const handleAccountsChanged = useCallback(
     async (accounts: any) => {
       let isUnlocked = true;
-      await ethereum._metamask.isUnlocked().then((result) => {
+      await ethereum._metamask.isUnlocked().then((result: boolean) => {
         isUnlocked = result;
       });
       if (!isUnlocked) {
@@ -119,7 +119,7 @@ function useWallet({ supportedChainIds }: useWalletProps): useWalletType {
     [logOut, getAccount]
   );
 
-  const handleSwitchChain = useCallback(async (chainId) => {
+  const handleSwitchChain = useCallback(async (chainId: number) => {
     const HexString = decimalToHex(chainId);
     try {
       await ethereum.request({
