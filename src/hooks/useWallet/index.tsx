@@ -26,8 +26,9 @@ const { ethereum } = window;
 export interface useWalletType {
   address: string;
   setAddress: (address: string) => void;
-  getAccount: () => void;
+  connect: () => void;
   logOut: () => void;
+  currentChainId: number;
   handleSwitchChain: (chainId: number) => void;
 }
 
@@ -37,7 +38,7 @@ export interface useWalletProps {
 
 export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType => {
   const [address, setAddress] = useState('');
-  const chain = useRef('');
+  const chain = useRef<any>('');
   // const [provider, setprovider] = useState(null);
   const [isLogout, setisLogout] = useState(false);
 
@@ -77,7 +78,7 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
     [setAddress],
   );
 
-  const getAccount = useCallback(() => {
+  const connect = useCallback(() => {
     if (!provider) {
       return alert('please connect first');
     }
@@ -99,16 +100,17 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
 
   const handleChainChanged = useCallback(
     (chainId: any) => {
+      const _chainId = Number(chainId);
       if (supportedChainIds.includes(Number(chainId))) {
-        chain.current = chainId;
-        getAccount();
+        chain.current = _chainId;
+        connect();
       } else {
         alert("This chain hasn't been supported yet.");
         chain.current = '';
         logOut();
       }
     },
-    [logOut, getAccount],
+    [logOut, connect],
   );
 
   const handleSwitchChain = useCallback(async (chainId: number) => {
@@ -172,5 +174,12 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
     };
   }, [handleAccountsChanged, handleChainChanged]);
 
-  return { address, setAddress, getAccount, logOut, handleSwitchChain };
+  return {
+    address,
+    setAddress,
+    connect,
+    logOut,
+    currentChainId: chain.current,
+    handleSwitchChain,
+  };
 };
