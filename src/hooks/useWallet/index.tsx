@@ -1,6 +1,6 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import * as ethers from 'ethers';
-import { errorFunction, unConnetTips } from './utils';
+import { errorFunction, unConnectTips } from './utils';
 import { getAddChainParameters } from './constants/chainInfo';
 import { decimalToHex } from './utils';
 
@@ -38,14 +38,14 @@ export interface useWalletProps {
 
 export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType => {
   const [address, setAddress] = useState('');
-  const chain = useRef<any>('');
+  const [chain, setChain] = useState<any>(-1);
   // const [provider, setprovider] = useState(null);
   const [isLogout, setisLogout] = useState(false);
 
   const logOut = useCallback(() => {
     setisLogout(true);
     setAddress('');
-    unConnetTips();
+    unConnectTips();
   }, [setAddress]);
   const handleAccountsChanged = useCallback(
     async (accounts: any) => {
@@ -59,7 +59,7 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
       if (accounts?.length === 0) {
         setAddress('');
         window.localStorage.setItem('userAddress', '');
-        unConnetTips();
+        unConnectTips();
       } else {
         // 检测账户切换后更新账户地址
         setAddress(accounts[0]);
@@ -85,7 +85,7 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
     if (address) {
       return;
     }
-    if (!chain.current) {
+    if (!chain) {
       return alert("please connect first or this chain hasn't been supported yet.");
     }
     provider
@@ -102,11 +102,10 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
     (chainId: any) => {
       const _chainId = Number(chainId);
       if (supportedChainIds.includes(Number(chainId))) {
-        chain.current = _chainId;
-        connect();
+        setChain(_chainId);
       } else {
-        alert("This chain hasn't been supported yet.");
-        chain.current = '';
+        alert("please connect first or this chain hasn't been supported yet.");
+        setChain('');
         logOut();
       }
     },
@@ -156,10 +155,17 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
   // 获取账户地址 (ethers)
 
   useEffect(() => {
-    if (provider && !isLogout) {
+    if (provider && !isLogout && chain === -1) {
       getChain();
     }
   }, [isLogout, getChain]);
+
+  useEffect(() => {
+    // chain 初始值为 -1 需等待获取chainId后才判断是否要连接
+    if (![-1, ''].includes(chain)) {
+      connect();
+    }
+  }, [chain]);
 
   useEffect(() => {
     if (typeof window.ethereum !== 'undefined') {
@@ -179,7 +185,7 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
     setAddress,
     connect,
     logOut,
-    currentChainId: chain.current,
+    currentChainId: chain,
     handleSwitchChain,
   };
 };

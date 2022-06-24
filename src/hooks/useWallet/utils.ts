@@ -38,7 +38,7 @@ export function fotmatErrorMsg(err: string) {
   return err;
 }
 
-export function unConnetTips() {
+export function unConnectTips() {
   alert('please connect first');
 }
 
