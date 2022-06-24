@@ -96,7 +96,7 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
             errorFunction(error);
           })
       : errorFunction('Connect failed: Please install wallet first.');
-  }, [handleAccountsChanged, address]);
+  }, [handleAccountsChanged, address, chain]);
 
   const handleChainChanged = useCallback(
     (chainId: any) => {
