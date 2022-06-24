@@ -1,10 +1,8 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import * as ethers from 'ethers';
 import { errorFunction, toHome } from './utils';
-// import { useWhyDidYouUpdate } from "ahooks";
-import { getAddChainParameters } from './chainInfo';
+import { getAddChainParameters } from './constants/chainInfo';
 import { decimalToHex } from './utils';
-
 
 const provider = (function () {
   let result: ethers.ethers.providers.Web3Provider | null;
@@ -42,8 +40,6 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
   const chain = useRef('');
   // const [provider, setprovider] = useState(null);
   const [isLogout, setisLogout] = useState(false);
-
-  // useWhyDidYouUpdate("useWallet", { provider, address });
 
   const logOut = useCallback(() => {
     setisLogout(true);
