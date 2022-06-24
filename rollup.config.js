@@ -18,16 +18,11 @@ export default {
     },
     {
       file: './dist/index.es.js',
-      format: 'es'
-    },
-    {
-      file: './dist/index.cjs.js',
-      format: 'cjs',
+      format: 'es',
       exports: 'named',
       sourcemap: true,
       strict: false,
     },
-
   ],
   plugins: [postcss(), typescript()],
   external: ['react', 'react-dom'],
