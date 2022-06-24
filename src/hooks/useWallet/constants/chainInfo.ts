@@ -1,3 +1,4 @@
+import { decimalToHex } from '../utils';
 import { SupportedChainId } from './chains';
 
 const infuraKey = '023190592fbf472fade57c802b61c7b3';
@@ -116,7 +117,7 @@ export const getAddChainParameters = (chainId: any) => {
   const chainInformation = CHAIN_INFO[chainId];
   if (isExtendedChainInformation(chainInformation)) {
     return {
-      chainId: Number(chainId),
+      chainId: decimalToHex(Number(chainId)),
       chainName: chainInformation.label,
       nativeCurrency: chainInformation.nativeCurrency,
       rpcUrls: chainInformation.urls,

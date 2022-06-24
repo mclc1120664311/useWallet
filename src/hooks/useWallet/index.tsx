@@ -114,7 +114,7 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
   );
 
   const handleSwitchChain = useCallback(async (chainId: number) => {
-    const HexString = decimalToHex(chainId);
+    const HexString = decimalToHex(Number(chainId));
     try {
       await ethereum.request({
         method: 'wallet_switchEthereumChain',
