@@ -48,7 +48,7 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
     unConnectTips();
   }, [setAddress]);
   const handleAccountsChanged = useCallback(
-    async (accounts: any, cb: Function) => {
+    async (accounts: any, cb?: Function) => {
       let isUnlocked = true;
       await ethereum._metamask.isUnlocked().then((result: boolean) => {
         isUnlocked = result;
@@ -70,7 +70,7 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
   );
 
   const connect = useCallback(
-    (cb: Function) => {
+    (cb?: Function) => {
       if (!provider) {
         return alert('please connect first');
       }
