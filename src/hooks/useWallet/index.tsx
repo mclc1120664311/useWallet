@@ -26,7 +26,7 @@ const { ethereum } = window;
 export interface useWalletType {
   address: string;
   setAddress: (address: string) => void;
-  connect: () => void;
+  connect: (cb?: Function) => void;
   logOut: () => void;
   currentChainId: number;
   handleSwitchChain: (chainId: number) => void;
@@ -48,47 +48,52 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
     unConnectTips();
   }, [setAddress]);
   const handleAccountsChanged = useCallback(
-    async (accounts: any, cb?: Function) => {
+    async (accounts: any) => {
       let isUnlocked = true;
       await ethereum._metamask.isUnlocked().then((result: boolean) => {
         isUnlocked = result;
       });
       if (!isUnlocked) {
-        alert('MetaMask is locked');
+        return 'MetaMask is locked';
       }
       if (accounts?.length === 0) {
         setAddress('');
-        window.localStorage.setItem('userAddress', '');
-        unConnectTips();
+        return 'please connect first';
       } else {
         // 检测账户切换后更新账户地址
         setAddress(accounts[0]);
-        cb && cb();
+        return;
       }
     },
     [setAddress],
   );
 
-  const connect = useCallback(
-    (cb?: Function) => {
+  const connect: useWalletType['connect'] = useCallback(() => {
+    return new Promise<void>((resolve, reject) => {
       if (!provider) {
-        return alert('please connect first');
+        return reject('please connect first');
       }
       if (address) {
         return;
       }
       if (!chain) {
-        return alert("this chain hasn't been supported yet.");
+        return reject("this chain hasn't been supported yet.");
       }
       provider
         .send('eth_requestAccounts', [])
-        .then((chainId) => handleAccountsChanged(chainId, cb))
+        .then(async (chainId) => {
+          const message = handleAccountsChanged(chainId);
+          if (message) {
+            reject(message);
+          } else {
+            resolve();
+          }
+        })
         .catch((error: any) => {
-          errorFunction(error);
+          reject(error);
         });
-    },
-    [handleAccountsChanged, address, chain],
-  );
+    });
+  }, [handleAccountsChanged, address, chain]);
 
   const handleChainChanged = useCallback(
     (chainId: any) => {
