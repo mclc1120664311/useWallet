@@ -117,7 +117,7 @@ export const getAddChainParameters = (chainId: any) => {
   const chainInformation = CHAIN_INFO[chainId];
   if (isExtendedChainInformation(chainInformation)) {
     return {
-      chainId: decimalToHex(chainId),
+      chainId: chainId,
       chainName: chainInformation.label,
       nativeCurrency: chainInformation.nativeCurrency,
       rpcUrls: chainInformation.urls,
