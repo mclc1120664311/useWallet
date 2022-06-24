@@ -26,7 +26,7 @@ const { ethereum } = window;
 export interface useWalletType {
   address: string;
   setAddress: (address: string) => void;
-  connect: (cb?: Function) => void;
+  connect: () => Promise<any>;
   logOut: () => void;
   currentChainId: number;
   handleSwitchChain: (chainId: number) => void;
@@ -69,7 +69,7 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
   );
 
   const connect: useWalletType['connect'] = useCallback(() => {
-    return new Promise<void>((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       if (!provider) {
         return reject('please connect first');
       }
@@ -82,11 +82,11 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
       provider
         .send('eth_requestAccounts', [])
         .then(async (chainId) => {
-          const message = handleAccountsChanged(chainId);
+          const message = await handleAccountsChanged(chainId);
           if (message) {
             reject(message);
           } else {
-            resolve();
+            resolve(null);
           }
         })
         .catch((error: any) => {
@@ -159,8 +159,14 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
 
   useEffect(() => {
     // chain 初始值为 -1 需等待获取chainId后才判断是否要连接
+    const init = async () => {
+      const message = await connect();
+      if (message) {
+        alert(message);
+      }
+    };
     if (![-1, ''].includes(chain)) {
-      connect();
+      init();
     }
   }, [chain]);
 
