@@ -48,7 +48,7 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
     unConnectTips();
   }, [setAddress]);
   const handleAccountsChanged = useCallback(
-    async (accounts: any) => {
+    async (accounts: any, successCall: Function) => {
       let isUnlocked = true;
       await ethereum._metamask.isUnlocked().then((result: boolean) => {
         isUnlocked = result;
@@ -63,16 +63,7 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
       } else {
         // 检测账户切换后更新账户地址
         setAddress(accounts[0]);
-        const userAdress = window.localStorage.getItem('userAddress');
-        if (!accounts[0]) return;
-        if (!userAdress) {
-          window.localStorage.setItem('userAddress', accounts[0]);
-          setAddress(accounts[0]);
-        } else if (userAdress !== accounts[0]) {
-          window.localStorage.setItem('userAddress', accounts[0]);
-          setAddress(accounts[0]);
-          window.location.reload();
-        }
+        successCall && successCall();
       }
     },
     [setAddress],
@@ -86,16 +77,14 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
       return;
     }
     if (!chain) {
-      return alert("please connect first or this chain hasn't been supported yet.");
+      return alert("this chain hasn't been supported yet.");
     }
     provider
-      ? provider
-          ?.send('eth_requestAccounts', [])
-          .then(handleAccountsChanged)
-          .catch((error: any) => {
-            errorFunction(error);
-          })
-      : errorFunction('Connect failed: Please install wallet first.');
+      .send('eth_requestAccounts', [])
+      .then(handleAccountsChanged)
+      .catch((error: any) => {
+        errorFunction(error);
+      });
   }, [handleAccountsChanged, address, chain]);
 
   const handleChainChanged = useCallback(
