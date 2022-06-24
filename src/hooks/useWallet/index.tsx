@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import * as ethers from 'ethers';
-import { errorFunction, unConnectTips } from './utils';
+import { errorFunction } from './utils';
 import { getAddChainParameters } from './constants/chainInfo';
 import { decimalToHex } from './utils';
 
@@ -28,6 +28,7 @@ export interface useWalletType {
   setAddress: (address: string) => void;
   connect: () => Promise<any>;
   logOut: () => void;
+  isLogout: Boolean;
   currentChainId: number;
   handleSwitchChain: (chainId: number) => void;
 }
@@ -45,7 +46,6 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
   const logOut = useCallback(() => {
     setisLogout(true);
     setAddress('');
-    unConnectTips();
   }, [setAddress]);
   const handleAccountsChanged = useCallback(
     (accounts: any) => {
@@ -63,6 +63,7 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
           reject('please connect first');
         } else {
           // 检测账户切换后更新账户地址
+          setisLogout(false);
           setAddress(accounts[0]);
           resolve(null);
         }
@@ -200,5 +201,6 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
     logOut,
     currentChainId: chain,
     handleSwitchChain,
+    isLogout,
   };
 };
