@@ -48,7 +48,7 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
     unConnectTips();
   }, [setAddress]);
   const handleAccountsChanged = useCallback(
-    async (accounts: any, successCall: Function) => {
+    async (accounts: any, cb: Function) => {
       let isUnlocked = true;
       await ethereum._metamask.isUnlocked().then((result: boolean) => {
         isUnlocked = result;
@@ -63,29 +63,32 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
       } else {
         // 检测账户切换后更新账户地址
         setAddress(accounts[0]);
-        successCall && successCall();
+        cb && cb();
       }
     },
     [setAddress],
   );
 
-  const connect = useCallback(() => {
-    if (!provider) {
-      return alert('please connect first');
-    }
-    if (address) {
-      return;
-    }
-    if (!chain) {
-      return alert("this chain hasn't been supported yet.");
-    }
-    provider
-      .send('eth_requestAccounts', [])
-      .then(handleAccountsChanged)
-      .catch((error: any) => {
-        errorFunction(error);
-      });
-  }, [handleAccountsChanged, address, chain]);
+  const connect = useCallback(
+    (cb: Function) => {
+      if (!provider) {
+        return alert('please connect first');
+      }
+      if (address) {
+        return;
+      }
+      if (!chain) {
+        return alert("this chain hasn't been supported yet.");
+      }
+      provider
+        .send('eth_requestAccounts', [])
+        .then((chainId) => handleAccountsChanged(chainId, cb))
+        .catch((error: any) => {
+          errorFunction(error);
+        });
+    },
+    [handleAccountsChanged, address, chain],
+  );
 
   const handleChainChanged = useCallback(
     (chainId: any) => {
