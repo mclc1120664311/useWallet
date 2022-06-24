@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import * as ethers from 'ethers';
-import { errorFunction, toHome } from './utils';
+import { errorFunction, unConnetTips } from './utils';
 import { getAddChainParameters } from './constants/chainInfo';
 import { decimalToHex } from './utils';
 
@@ -45,7 +45,7 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
   const logOut = useCallback(() => {
     setisLogout(true);
     setAddress('');
-    toHome();
+    unConnetTips();
   }, [setAddress]);
   const handleAccountsChanged = useCallback(
     async (accounts: any) => {
@@ -59,7 +59,7 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
       if (accounts?.length === 0) {
         setAddress('');
         window.localStorage.setItem('userAddress', '');
-        toHome();
+        unConnetTips();
       } else {
         // 检测账户切换后更新账户地址
         setAddress(accounts[0]);

@@ -38,11 +38,8 @@ export function fotmatErrorMsg(err: string) {
   return err;
 }
 
-export function toHome() {
-  if (window.location.hash !== '#/') {
-    alert('please connect first');
-    window.location.hash = '';
-  }
+export function unConnetTips() {
+  alert('please connect first');
 }
 
 export const decimalToHex = (decimal: number) => {
