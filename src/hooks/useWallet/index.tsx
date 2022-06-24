@@ -71,20 +71,20 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
   const connect: useWalletType['connect'] = useCallback(() => {
     return new Promise((resolve, reject) => {
       if (!provider) {
-        return reject('please connect first');
+        return reject(new Error('please connect first'));
       }
       if (address) {
         return;
       }
       if (!chain) {
-        return reject("this chain hasn't been supported yet.");
+        return reject(new Error("this chain hasn't been supported yet."));
       }
       provider
         .send('eth_requestAccounts', [])
         .then(async (chainId) => {
           const message = await handleAccountsChanged(chainId);
           if (message) {
-            reject(message);
+            reject(new Error(message));
           } else {
             resolve(null);
           }
