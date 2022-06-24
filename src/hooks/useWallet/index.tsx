@@ -48,22 +48,25 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
     unConnectTips();
   }, [setAddress]);
   const handleAccountsChanged = useCallback(
-    async (accounts: any) => {
-      let isUnlocked = true;
-      await ethereum._metamask.isUnlocked().then((result: boolean) => {
-        isUnlocked = result;
+    (accounts: any) => {
+      return new Promise(async (resolve, reject) => {
+        let isUnlocked = true;
+        await ethereum._metamask.isUnlocked().then((result: boolean) => {
+          isUnlocked = result;
+        });
+        if (!isUnlocked) {
+          setAddress('');
+          reject(new Error('MetaMask is locked'));
+        }
+        if (accounts?.length === 0) {
+          setAddress('');
+          reject('please connect first');
+        } else {
+          // 检测账户切换后更新账户地址
+          setAddress(accounts[0]);
+          resolve(null);
+        }
       });
-      if (!isUnlocked) {
-        return 'MetaMask is locked';
-      }
-      if (accounts?.length === 0) {
-        setAddress('');
-        return 'please connect first';
-      } else {
-        // 检测账户切换后更新账户地址
-        setAddress(accounts[0]);
-        return;
-      }
     },
     [setAddress],
   );
@@ -82,11 +85,11 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
       provider
         .send('eth_requestAccounts', [])
         .then(async (chainId) => {
-          const message = await handleAccountsChanged(chainId);
-          if (message) {
-            reject(new Error(message));
-          } else {
+          try {
+            await handleAccountsChanged(chainId);
             resolve(null);
+          } catch (err) {
+            reject(err);
           }
         })
         .catch((error: any) => {
@@ -171,13 +174,20 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
   }, [chain]);
 
   useEffect(() => {
+    const handleAccountChange = async (accounts: any) => {
+      try {
+        await handleAccountsChanged(accounts);
+      } catch (err) {
+        alert(err);
+      }
+    };
     if (typeof window.ethereum !== 'undefined') {
-      window.ethereum.on('accountsChanged', handleAccountsChanged);
+      window.ethereum.on('accountsChanged', handleAccountChange);
       window.ethereum.on('chainChanged', handleChainChanged);
     }
     return () => {
       if (typeof window.ethereum !== 'undefined') {
-        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+        window.ethereum.removeListener('accountsChanged', handleAccountChange);
         window.ethereum.removeListener('chainChanged', handleChainChanged);
       }
     };
