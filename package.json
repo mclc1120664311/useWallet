@@ -1,6 +1,6 @@
 {
   "name": "@zlincgx/wallethooks",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "description": "the react hooks about ethereum wallet ",
   "author": "Zlin",
   "license": "Apache-2.0",
@@ -21,8 +21,7 @@
   "scripts": {
     "build": "rollup -c",
     "start": "rollup -c -w",
-    "test": "jest",
-    "publish": "yarn build && npm version patch && npm publish"
+    "test": "jest"
   },
   "jest": {
     "transform": {
