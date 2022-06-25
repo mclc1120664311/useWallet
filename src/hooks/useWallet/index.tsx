@@ -10,13 +10,7 @@ const provider = (function () {
     result = new ethers.providers.Web3Provider(window.ethereum, 'any');
   } else {
     result = null;
-    if (process.env.platform === 'h5') {
-      alert(
-        'Connect failed: Please install wallet first or please refresh the browser page',
-      );
-    } else {
-      alert('Connect failed: Please install wallet first.');
-    }
+    alert('Connect failed: Please install wallet first.');
   }
   return result;
 })();
@@ -104,13 +98,14 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
       const _chainId = Number(chainId);
       if (supportedChainIds.includes(Number(chainId))) {
         setChain(_chainId);
+        setisLogout(false);
       } else {
         alert("please connect first or this chain hasn't been supported yet.");
         setChain('');
         logOut();
       }
     },
-    [logOut, connect],
+    [logOut, supportedChainIds],
   );
 
   const handleSwitchChain = useCallback(async (chainId: number) => {
@@ -120,6 +115,7 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: HexString }],
       });
+      setisLogout(false);
     } catch (switchError) {
       // This error code indicates that the chain has not been added to MetaMask.
       // @ts-ignore
@@ -156,10 +152,10 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
   // 获取账户地址 (ethers)
 
   useEffect(() => {
-    if (provider && !isLogout && chain === -1) {
+    if (provider && !isLogout) {
       getChain();
     }
-  }, [isLogout, getChain]);
+  }, [isLogout, getChain, chain]);
 
   useEffect(() => {
     // chain 初始值为 -1 需等待获取chainId后才判断是否要连接
@@ -169,10 +165,10 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
         alert(message);
       }
     };
-    if (![-1, ''].includes(chain)) {
+    if (![-1, ''].includes(chain) && !isLogout) {
       init();
     }
-  }, [chain]);
+  }, [chain, connect]);
 
   useEffect(() => {
     const handleAccountChange = async (accounts: any) => {
