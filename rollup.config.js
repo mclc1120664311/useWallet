@@ -1,7 +1,7 @@
 import postcss from 'rollup-plugin-postcss'
 
 
-import { uglify } from 'rollup-plugin-uglify'
+// import { uglify } from 'rollup-plugin-uglify'
 import typescript from 'rollup-plugin-typescript2'
 
 // import pkg from './package.json'
