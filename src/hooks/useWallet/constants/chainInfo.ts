@@ -5,13 +5,9 @@ const infuraKey = '023190592fbf472fade57c802b61c7b3';
 const alchemyKey = '_gg7wSSi0KMBsdKnGVfHDueq6xMB9EkC';
 export interface BaseChainInfo {
   readonly blockWaitMsBeforeWarning?: number;
-  readonly docs: string;
-  readonly bridge?: string;
   readonly explorer: string;
-  readonly infoLink: string;
   readonly logoUrl?: string;
   readonly label: string;
-  readonly helpCenterUrl?: string;
   readonly nativeCurrency: {
     name: string; // e.g. 'Goerli ETH',
     symbol: string; // e.g. 'gorETH',
@@ -27,9 +23,7 @@ export interface ChainInfoMap {
 
 export const CHAIN_INFO: ChainInfoMap = {
   [SupportedChainId.MAINNET]: {
-    docs: 'https://docs.uniswap.org/',
     explorer: 'https://etherscan.io/',
-    infoLink: 'https://info.uniswap.org/#/',
     label: 'Ethereum',
     nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
     urls: [
@@ -39,9 +33,7 @@ export const CHAIN_INFO: ChainInfoMap = {
     ].filter((url) => url !== undefined),
   },
   [SupportedChainId.RINKEBY]: {
-    docs: 'https://docs.uniswap.org/',
     explorer: 'https://rinkeby.etherscan.io/',
-    infoLink: 'https://info.uniswap.org/#/',
     label: 'Rinkeby',
     nativeCurrency: { name: 'Rinkeby Ether', symbol: 'rETH', decimals: 18 },
     urls: [
@@ -49,9 +41,7 @@ export const CHAIN_INFO: ChainInfoMap = {
     ].filter((url) => url !== undefined),
   },
   [SupportedChainId.ROPSTEN]: {
-    docs: 'https://docs.uniswap.org/',
     explorer: 'https://ropsten.etherscan.io/',
-    infoLink: 'https://info.uniswap.org/#/',
     label: 'Ropsten',
     nativeCurrency: { name: 'Ropsten Ether', symbol: 'ropETH', decimals: 18 },
     urls: [
@@ -59,9 +49,7 @@ export const CHAIN_INFO: ChainInfoMap = {
     ].filter((url) => url !== undefined),
   },
   [SupportedChainId.KOVAN]: {
-    docs: 'https://docs.uniswap.org/',
     explorer: 'https://kovan.etherscan.io/',
-    infoLink: 'https://info.uniswap.org/#/',
     label: 'Kovan',
     nativeCurrency: { name: 'Kovan Ether', symbol: 'kovETH', decimals: 18 },
     urls: [infuraKey ? `https://kovan.infura.io/v3/${infuraKey}` : undefined].filter(
@@ -69,9 +57,7 @@ export const CHAIN_INFO: ChainInfoMap = {
     ),
   },
   [SupportedChainId.GOERLI]: {
-    docs: 'https://docs.uniswap.org/',
     explorer: 'https://goerli.etherscan.io/',
-    infoLink: 'https://info.uniswap.org/#/',
     label: 'Görli',
     nativeCurrency: { name: 'Görli Ether', symbol: 'görETH', decimals: 18 },
     urls: [
@@ -79,10 +65,7 @@ export const CHAIN_INFO: ChainInfoMap = {
     ].filter((url) => url !== undefined),
   },
   [SupportedChainId.POLYGON]: {
-    bridge: 'https://wallet.polygon.technology/bridge',
-    docs: 'https://polygon.io/',
     explorer: 'https://polygonscan.com/',
-    infoLink: 'https://info.uniswap.org/#/polygon/',
     label: 'Polygon',
     nativeCurrency: { name: 'Polygon Matic', symbol: 'MATIC', decimals: 18 },
     urls: [
@@ -92,10 +75,7 @@ export const CHAIN_INFO: ChainInfoMap = {
     blockExplorerUrls: ['https://polygonscan.com'],
   },
   [SupportedChainId.POLYGON_MUMBAI]: {
-    bridge: 'https://wallet.polygon.technology/bridge',
-    docs: 'https://polygon.io/',
     explorer: 'https://mumbai.polygonscan.com/',
-    infoLink: 'https://info.uniswap.org/#/polygon/',
     label: 'Polygon Mumbai',
     nativeCurrency: {
       name: 'Polygon Mumbai Matic',
@@ -106,6 +86,28 @@ export const CHAIN_INFO: ChainInfoMap = {
       infuraKey ? `https://polygon-mumbai.infura.io/v3/${infuraKey}` : undefined,
     ].filter((url) => url !== undefined),
     blockExplorerUrls: ['https://mumbai.polygonscan.com'],
+  },
+  [SupportedChainId.BINANCE]: {
+    explorer: 'https://bscscan.com/',
+    label: 'BNB Smart Chain Testnet',
+    nativeCurrency: {
+      name: 'Binancec',
+      symbol: 'BNB',
+      decimals: 18,
+    },
+    urls: ['https://bsc-dataseed3.defibit.io'],
+    blockExplorerUrls: ['https://bscscan.com/'],
+  },
+  [SupportedChainId.BINANCE_TEST]: {
+    explorer: 'https://testnet.bscscan.com/',
+    label: 'BNB Smart Chain Testnet',
+    nativeCurrency: {
+      name: 'Polygon Mumbai Matic',
+      symbol: 'BNB Test',
+      decimals: 18,
+    },
+    urls: ['https://data-seed-prebsc-2-s2.binance.org:8545'],
+    blockExplorerUrls: ['https://testnet.bscscan.com/'],
   },
 };
 
