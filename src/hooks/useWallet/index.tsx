@@ -24,7 +24,7 @@ export interface useWalletType {
   logOut: () => void;
   isLogout: Boolean;
   currentChainId: number;
-  handleSwitchChain: (chainId: number) => void;
+  handleSwitchChain: (chainId: number) => Promise<any>;
 }
 
 export interface useWalletProps {
