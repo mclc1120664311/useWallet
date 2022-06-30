@@ -109,27 +109,31 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
   );
 
   const handleSwitchChain = useCallback(async (chainId: number) => {
-    const HexString = decimalToHex(Number(chainId));
-    try {
-      await ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: HexString }],
-      });
-      setisLogout(false);
-    } catch (switchError) {
-      // This error code indicates that the chain has not been added to MetaMask.
-      // @ts-ignore
-      if (switchError.code === 4902) {
-        try {
-          await ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [getAddChainParameters(chainId)],
-          });
-        } catch (addError) {
-          // handle "add" error
+    return new Promise(async (resolve, reject) => {
+      const HexString = decimalToHex(Number(chainId));
+      try {
+        await ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: HexString }],
+        });
+        setisLogout(false);
+        resolve(null);
+      } catch (switchError) {
+        // This error code indicates that the chain has not been added to MetaMask.
+        // @ts-ignore
+        if (switchError.code === 4902) {
+          try {
+            await ethereum.request({
+              method: 'wallet_addEthereumChain',
+              params: [getAddChainParameters(chainId)],
+            });
+          } catch (addError) {
+            reject(addError);
+          }
         }
+        reject(switchError);
       }
-    }
+    });
   }, []);
 
   const getChain = useCallback(() => {
