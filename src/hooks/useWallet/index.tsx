@@ -117,6 +117,7 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
           params: [{ chainId: HexString }],
         });
         setisLogout(false);
+        setChain(chainId);
         resolve(null);
       } catch (switchError) {
         // This error code indicates that the chain has not been added to MetaMask.
@@ -127,6 +128,7 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
               method: 'wallet_addEthereumChain',
               params: [getAddChainParameters(chainId)],
             });
+            setChain(chainId);
           } catch (addError) {
             reject(addError);
           }
