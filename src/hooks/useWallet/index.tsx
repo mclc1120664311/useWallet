@@ -100,9 +100,7 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
         setChain(_chainId);
         setisLogout(false);
       } else {
-        console.log(
-           "please connect first or this chain hasn't been supported yet.",
-         );
+        console.log("please connect first or this chain hasn't been supported yet.");
         setChain('');
         logOut();
       }
@@ -166,9 +164,10 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
   useEffect(() => {
     // chain 初始值为 -1 需等待获取chainId后才判断是否要连接
     const init = async () => {
-      const message = await connect();
-      if (message) {
-        alert(message);
+      try {
+        await connect();
+      } catch (err) {
+        console.log(err);
       }
     };
     if (![-1, ''].includes(chain) && !isLogout) {
