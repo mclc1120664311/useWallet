@@ -118,7 +118,7 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
         });
         setisLogout(false);
         setChain(chainId);
-        resolve(null);
+        resolve({ chainId });
       } catch (switchError) {
         // This error code indicates that the chain has not been added to MetaMask.
         // @ts-ignore
