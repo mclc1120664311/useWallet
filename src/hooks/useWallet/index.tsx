@@ -74,9 +74,9 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
       if (address) {
         return;
       }
-      if (!chain) {
-        return reject(new Error("this chain hasn't been supported yet."));
-      }
+      // if (!chain) {
+      //   return reject(new Error("this chain hasn't been supported yet."));
+      // }
       provider
         .send('eth_requestAccounts', [])
         .then(async (chainId) => {
@@ -91,7 +91,7 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
           reject(error);
         });
     });
-  }, [handleAccountsChanged, address, chain]);
+  }, [handleAccountsChanged, address]);
 
   const handleChainChanged = useCallback(
     (chainId: any) => {
