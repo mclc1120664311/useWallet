@@ -59,7 +59,7 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
           // 检测账户切换后更新账户地址
           setisLogout(false);
           setAddress(accounts[0]);
-          resolve(null);
+          resolve({ address: accounts[0] });
         }
       });
     },
@@ -81,8 +81,8 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
         .send('eth_requestAccounts', [])
         .then(async (chainId) => {
           try {
-            await handleAccountsChanged(chainId);
-            resolve(null);
+            const res = await handleAccountsChanged(chainId);
+            resolve(res);
           } catch (err) {
             reject(err);
           }
@@ -100,7 +100,9 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
         setChain(_chainId);
         setisLogout(false);
       } else {
-        alert("please connect first or this chain hasn't been supported yet.");
+        console.log(
+           "please connect first or this chain hasn't been supported yet.",
+         );
         setChain('');
         logOut();
       }
@@ -172,14 +174,14 @@ export const useWallet = ({ supportedChainIds }: useWalletProps): useWalletType 
     if (![-1, ''].includes(chain) && !isLogout) {
       init();
     }
-  }, [chain, connect]);
+  }, [chain, connect, isLogout]);
 
   useEffect(() => {
     const handleAccountChange = async (accounts: any) => {
       try {
         await handleAccountsChanged(accounts);
       } catch (err) {
-        alert(err);
+        console.log(err);
       }
     };
     if (typeof window.ethereum !== 'undefined') {
